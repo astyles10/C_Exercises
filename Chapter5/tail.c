@@ -25,36 +25,43 @@ int main(int argc, char *argv[])
 
         // Get options, increment i for each option
         int i = 1;
-        if (argv[i][0] == '-') {
+        while (argv[i][0] == '-')
+        {
             int opt = argv[i][1];
             int optItr = 2;
-            switch(opt) {
-                case 'n':
-                    // Check if anything follows -n
-                    if (strlen(argv[i]) < 3) {
-                        strcat(errString, argv[i]);
-                        strcat(errString, "\' - Number of lines required");
-                        return printError(errString);
-                    }
-                    char* numPtr = &argv[i][optItr];
-
-                    // Check if following input is a number
-                    for (int x = 0; x < strlen(numPtr); x++) {
-                        if (!isdigit(numPtr[x])) {
-                            strcat(errString, argv[i]);
-                            strcat(errString, "\' - Invalid number of lines: ");
-                            strcat(errString, numPtr);
-                            return (printError(errString));
-                        }
-                    }
-                    numLines = atoi(numPtr);
-                    break;
-                default:
+            switch (opt)
+            {
+            case 'n':
+                // Check if anything follows -n
+                if (strlen(argv[i]) < 3)
+                {
                     strcat(errString, argv[i]);
-                    strcat(errString, "\'");
+                    strcat(errString, "\' - Number of lines required");
                     return printError(errString);
-                    break;
+                }
+                char *numPtr = &argv[i][optItr];
+
+                // Check if following input is a number
+                int x;
+                for (x = 0; x < strlen(numPtr); x++)
+                {
+                    if (!isdigit(numPtr[x]))
+                    {
+                        strcat(errString, argv[i]);
+                        strcat(errString, "\' - Invalid number of lines: ");
+                        strcat(errString, numPtr);
+                        return (printError(errString));
+                    }
+                }
+                numLines = atoi(numPtr);
+                break;
+            default:
+                strcat(errString, argv[i]);
+                strcat(errString, "\'");
+                return printError(errString);
+                break;
             }
+            i++;
         }
 
         while (i <= lim)
@@ -76,7 +83,9 @@ int main(int argc, char *argv[])
                         printf("%s", line);
                     numFileLines--;
                 }
-            } else {
+            }
+            else
+            {
                 printf("%s\n", strerror(errno));
             }
             printf("\n");
@@ -91,13 +100,14 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int printError(char *err) {
+int printError(char *err)
+{
     printf("%s\n", err);
     return -1;
 }
 
-int printTail(char* fname) {
-
+int printTail(char *fname)
+{
 }
 
 int fgetline(char *line, int max)
